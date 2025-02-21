@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func fetchCotacao(ctx context.Context) (string, error) {
+func fetchQuote(ctx context.Context) (string, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", "http://localhost:8080/cotacao", nil)
 	if err != nil {
 		return "", err
@@ -45,7 +45,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Millisecond)
 	defer cancel()
 
-	bid, err := fetchCotacao(ctx)
+	bid, err := fetchQuote(ctx)
 	if err != nil {
 		log.Println("Error fetching cotação:", err)
 		return

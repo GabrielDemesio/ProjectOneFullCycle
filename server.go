@@ -65,7 +65,7 @@ func saveToDatabase(ctx context.Context, db *sql.DB, bid string) error {
 	return err
 }
 
-func handleCotacao(w http.ResponseWriter, r *http.Request) {
+func handleQuote(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 200*time.Millisecond)
 	defer cancel()
 
@@ -112,7 +112,7 @@ func main() {
 		log.Fatal("Error creating table:", err)
 	}
 
-	http.HandleFunc("/cotacao", handleCotacao)
+	http.HandleFunc("/cotacao", handleQuote)
 	fmt.Println("Server running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
