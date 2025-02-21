@@ -8,7 +8,7 @@ client.go → Implementa o cliente que consome e exibe as taxas.
 
 exchange_rates.db → Banco de dados SQLite3 com as taxas de câmbio.
 
-cotacao.txt → Possível arquivo de armazenamento de cotações.
+cotacao.txt →  Arquivo txt de armazenamento de cotações.
 
 go.mod e go.sum → Gerenciamento de dependências do Go.
 
