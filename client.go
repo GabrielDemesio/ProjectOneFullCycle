@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -21,7 +22,12 @@ func fetchQuote(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("unexpected status code: %d", resp.StatusCode)
@@ -37,7 +43,7 @@ func fetchQuote(ctx context.Context) (string, error) {
 }
 
 func saveToFile(bid string) error {
-	content := fmt.Sprintf("Dólar: %s", bid)
+	content := fmt.Sprintf("Dollar value : %s", bid)
 	return ioutil.WriteFile("cotacao.txt", []byte(content), 0644)
 }
 
@@ -56,6 +62,5 @@ func main() {
 		log.Println("Error saving to file:", err)
 		return
 	}
-
 	fmt.Println("Cotação salva em 'cotacao.txt'")
 }

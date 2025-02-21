@@ -85,7 +85,12 @@ func handleQuote(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error opening database:", err)
 		return
 	}
-	defer db.Close()
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(db)
 
 	err = saveToDatabase(dbCtx, db, bid)
 	if err != nil {
@@ -105,7 +110,12 @@ func main() {
 	if err != nil {
 		log.Fatal("Error initializing database:", err)
 	}
-	defer db.Close()
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(db)
 
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS exchange_rates (id INTEGER PRIMARY KEY AUTOINCREMENT, bid TEXT, timestamp INTEGER)")
 	if err != nil {
